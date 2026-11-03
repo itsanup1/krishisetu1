@@ -40,7 +40,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const savedToken = localStorage.getItem('krishi_token');
       const savedUser = localStorage.getItem('krishi_user');
 
-<<<<<<< HEAD
       if (healthy) {
         let authSuccess = false;
         if (savedToken && !savedToken.startsWith('mock-')) {
@@ -80,40 +79,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setToken(null);
           }
         } else {
-=======
-      if (savedToken && savedUser) {
-        try {
-          const parsedUser = JSON.parse(savedUser);
-          setUser(parsedUser);
-          setToken(savedToken);
-          // If backend is live and saved token was a mock token, exchange it for a real JWT
-          if (healthy && savedToken.startsWith('mock-jwt-')) {
-            const response = await api.login(parsedUser.email || 'farmer@krishisetu.com', 'password123');
-            setToken(response.access_token);
-            setUser(response.user);
-            localStorage.setItem('krishi_token', response.access_token);
-            localStorage.setItem('krishi_user', JSON.stringify(response.user));
-          } else {
-            const me = await api.getMe();
-            setUser(me);
-            localStorage.setItem('krishi_user', JSON.stringify(me));
-          }
-        } catch {
-          localStorage.removeItem('krishi_token');
-          localStorage.removeItem('krishi_user');
-          setUser(null);
-          setToken(null);
-        }
-      } else {
-        // Default demo account on first load
-        try {
-          const response = await api.login('farmer@krishisetu.com', 'password123');
-          setToken(response.access_token);
-          setUser(response.user);
-          localStorage.setItem('krishi_token', response.access_token);
-          localStorage.setItem('krishi_user', JSON.stringify(response.user));
-        } catch {
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
           const defaultUser: User = {
             id: 1,
             name: 'Ramesh Kumar (Farmer & Owner)',
@@ -124,11 +89,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             location: 'Nashik, Maharashtra',
             created_at: new Date().toISOString(),
           };
-<<<<<<< HEAD
           const demoToken = 'mock-jwt-1';
-=======
-          const demoToken = 'mock-jwt-demo-token-farmer-1';
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
           localStorage.setItem('krishi_token', demoToken);
           localStorage.setItem('krishi_user', JSON.stringify(defaultUser));
           setUser(defaultUser);
@@ -189,12 +150,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       VENDOR: { email: 'vendor@krishisetu.com', pass: 'vendor123' },
       ADMIN: { email: 'admin@krishisetu.com', pass: 'admin123' },
     };
-<<<<<<< HEAD
     const target = creds[role] || { email: 'farmer@krishisetu.com', pass: 'farmer123' };
     await login(target.email, target.pass);
-=======
-    await login(emails[role], 'password123');
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
   };
 
   return (

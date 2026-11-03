@@ -784,12 +784,8 @@ class MockBackendEngine {
     farmerId: number,
     razorpayOrderId?: string,
     razorpayPaymentId?: string,
-<<<<<<< HEAD
     deliveryAddress?: string,
     items?: Array<{ product_id: number; quantity: number; price_at_purchase?: number }>
-=======
-    deliveryAddress?: string
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
   ): Order {
     let orderItems: OrderItem[] = [];
     let total = 0;
@@ -840,11 +836,7 @@ class MockBackendEngine {
       farmer_name: farmer ? farmer.name : 'Farmer',
       status: 'PLACED',
       total_amount: total,
-<<<<<<< HEAD
       delivery_address: deliveryAddress || farmer?.location || 'Nashik, Maharashtra',
-=======
-      delivery_address: deliveryAddress || (farmer ? farmer.location : 'Registered Farm Address'),
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
       razorpay_order_id: razorpayOrderId || `order_test_${Date.now()}`,
       razorpay_payment_id: razorpayPaymentId,
       items: orderItems,
@@ -1386,14 +1378,9 @@ export const api = {
       const userStr = localStorage.getItem('krishi_user');
       const farmerId = userStr ? JSON.parse(userStr).id : 1;
       const rzpOrderId = typeof dataOrRazorpayOrderId === 'object' ? dataOrRazorpayOrderId?.razorpay_order_id : dataOrRazorpayOrderId;
-<<<<<<< HEAD
       const deliveryAddress = typeof dataOrRazorpayOrderId === 'object' ? dataOrRazorpayOrderId?.delivery_address : undefined;
       const items = typeof dataOrRazorpayOrderId === 'object' ? dataOrRazorpayOrderId?.items : undefined;
       return mockBackend.createOrder(farmerId, rzpOrderId, razorpayPaymentId, deliveryAddress, items);
-=======
-      const deliveryAddr = typeof dataOrRazorpayOrderId === 'object' ? dataOrRazorpayOrderId?.delivery_address : undefined;
-      return mockBackend.createOrder(farmerId, rzpOrderId, razorpayPaymentId, deliveryAddr);
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
     }
   },
 
@@ -1408,12 +1395,8 @@ export const api = {
       mockBackend.updateOrderStatus(data.order_id, 'CONFIRMED', data.razorpay_payment_id);
       return true;
     } catch {
-<<<<<<< HEAD
       // Backend unavailable or order created in mock
       mockBackend.updateOrderStatus(data.order_id, 'CONFIRMED', data.razorpay_payment_id);
-=======
-      mockBackend.updateOrderStatus(data.order_id, 'CONFIRMED');
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
       return true;
     }
   },

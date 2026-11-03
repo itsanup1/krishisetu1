@@ -140,25 +140,10 @@ def delete_cart_item(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-<<<<<<< HEAD
     item = db.query(CartItem).filter(CartItem.id == id, CartItem.farmer_id == current_user.id).first()
     if item:
         db.delete(item)
         db.commit()
-=======
-    item = (
-        db.query(CartItem)
-        .filter(
-            CartItem.farmer_id == current_user.id,
-            (CartItem.id == id) | (CartItem.product_id == id),
-        )
-        .first()
-    )
-    if not item:
-        raise HTTPException(status_code=404, detail="Cart item not found")
-    db.delete(item)
-    db.commit()
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
     return None
 
 # Order Endpoints
@@ -169,72 +154,8 @@ def create_order(
     db: Session = Depends(get_db),
 ):
     cart_items = db.query(CartItem).filter(CartItem.farmer_id == current_user.id).all()
-<<<<<<< HEAD
     if not cart_items and not order_in.items:
         raise HTTPException(status_code=400, detail="Cannot checkout with empty cart.")
-=======
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
-
-    total_amount = 0.0
-    order_items = []
-
-<<<<<<< HEAD
-    # If explicit items were passed in checkout payload, prefer those
-    if order_in.items and len(order_in.items) > 0:
-        for item_in in order_in.items:
-            product = db.query(Product).filter(Product.id == item_in.product_id).first()
-            if not product:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"Product #{item_in.product_id} not found in marketplace"
-                )
-            if product.stock < item_in.quantity:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Insufficient stock for '{product.name}' (Requested: {item_in.quantity}, Available: {product.stock})"
-                )
-            price = item_in.price_at_purchase if item_in.price_at_purchase is not None else product.price
-            total_amount += price * item_in.quantity
-            order_items.append((product, item_in.quantity, price))
-    elif cart_items:
-        for item in cart_items:
-            product = item.product
-            if not product:
-                raise HTTPException(status_code=404, detail="Product not found for cart item")
-            if product.stock < item.quantity:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Insufficient stock for '{product.name}' (Requested: {item.quantity}, Available: {product.stock})"
-                )
-            total_amount += product.price * item.quantity
-            order_items.append((product, item.quantity, product.price))
-=======
-    if cart_items:
-        for item in cart_items:
-            product = item.product
-            if not product or product.stock < item.quantity:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Insufficient stock for '{product.name if product else 'Item'}'",
-                )
-            total_amount += product.price * item.quantity
-            order_items.append((product, item.quantity, product.price))
-    elif order_in.items:
-        for req_item in order_in.items:
-            product = db.query(Product).filter(Product.id == req_item.product_id).first()
-            if not product or product.stock < req_item.quantity:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Insufficient stock for '{product.name if product else 'Item'}'",
-                )
-            price = product.price
-            total_amount += price * req_item.quantity
-            order_items.append((product, req_item.quantity, price))
-    else:
-        raise HTTPException(status_code=400, detail="Cannot checkout with empty cart.")
-
-    rzp_order_id = order_in.razorpay_order_id or f"order_test_{int(time.time())}_{current_user.id}"
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
     # Create Order
     db_order = Order(
@@ -269,14 +190,10 @@ def create_order(
 
     db.commit()
     db.refresh(db_order)
-<<<<<<< HEAD
 
     resp = OrderResponse.model_validate(db_order)
     resp.farmer_name = current_user.name
     return resp
-=======
-    return format_order_response(db_order)
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.get("/orders/my", response_model=List[OrderResponse])
 def get_my_orders(
@@ -303,7 +220,6 @@ def get_my_orders(
             .all()
         )
 
-<<<<<<< HEAD
     results = []
     for o in orders:
         resp = OrderResponse.model_validate(o)
@@ -311,9 +227,6 @@ def get_my_orders(
             resp.farmer_name = o.farmer.name
         results.append(resp)
     return results
-=======
-    return [format_order_response(o) for o in orders]
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.get("/orders/{id}", response_model=OrderResponse)
 def get_order_by_id(
@@ -324,14 +237,10 @@ def get_order_by_id(
     order = db.query(Order).filter(Order.id == id).first()
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
-<<<<<<< HEAD
     resp = OrderResponse.model_validate(order)
     if order.farmer:
         resp.farmer_name = order.farmer.name
     return resp
-=======
-    return format_order_response(order)
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.put("/orders/{id}/status", response_model=OrderResponse)
 def update_order_status(
@@ -346,12 +255,7 @@ def update_order_status(
     order.status = status_update.status
     db.commit()
     db.refresh(order)
-<<<<<<< HEAD
     resp = OrderResponse.model_validate(order)
     if order.farmer:
         resp.farmer_name = order.farmer.name
     return resp
-=======
-    return format_order_response(order)
-
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422

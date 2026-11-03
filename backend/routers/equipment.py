@@ -51,7 +51,6 @@ def get_equipment(
                 User.name.ilike(q),
             )
         )
-<<<<<<< HEAD
     equipment_list = query.order_by(Equipment.created_at.desc()).all()
     results = []
     for eq in equipment_list:
@@ -61,41 +60,25 @@ def get_equipment(
             resp.owner_phone = eq.owner.phone
         results.append(resp)
     return results
-=======
-    equipment_list = query.order_by(Equipment.id.asc()).all()
-    return [format_equipment_response(eq) for eq in equipment_list]
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.get("/my", response_model=List[EquipmentResponse])
 def get_my_equipment(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-<<<<<<< HEAD
     equipment_list = db.query(Equipment).filter(Equipment.owner_id == current_user.id).all()
     return [EquipmentResponse.model_validate(eq) for eq in equipment_list]
-=======
-    if current_user.role == UserRole.ADMIN:
-        equipment_list = db.query(Equipment).order_by(Equipment.id.asc()).all()
-    else:
-        equipment_list = db.query(Equipment).filter(Equipment.owner_id == current_user.id).order_by(Equipment.id.asc()).all()
-    return [format_equipment_response(eq) for eq in equipment_list]
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.get("/{id}", response_model=EquipmentResponse)
 def get_equipment_by_id(id: int, db: Session = Depends(get_db)):
     eq = db.query(Equipment).filter(Equipment.id == id).first()
     if not eq:
         raise HTTPException(status_code=404, detail="Equipment machinery not found")
-<<<<<<< HEAD
     resp = EquipmentResponse.model_validate(eq)
     if eq.owner:
         resp.owner_name = eq.owner.name
         resp.owner_phone = eq.owner.phone
     return resp
-=======
-    return format_equipment_response(eq)
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.get("/{id}/bookings", response_model=List[BookingResponse])
 def get_equipment_bookings(id: int, db: Session = Depends(get_db)):
@@ -147,15 +130,11 @@ def create_equipment(
     db.add(equipment)
     db.commit()
     db.refresh(equipment)
-<<<<<<< HEAD
 
     resp = EquipmentResponse.model_validate(equipment)
     resp.owner_name = current_user.name
     resp.owner_phone = current_user.phone
     return resp
-=======
-    return format_equipment_response(equipment)
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.put("/{id}", response_model=EquipmentResponse)
 def update_equipment(
@@ -176,13 +155,9 @@ def update_equipment(
 
     db.commit()
     db.refresh(eq)
-<<<<<<< HEAD
     resp = EquipmentResponse.model_validate(eq)
     resp.owner_name = current_user.name
     return resp
-=======
-    return format_equipment_response(eq)
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_equipment(

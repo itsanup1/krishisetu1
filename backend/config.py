@@ -1,8 +1,8 @@
+from typing import List
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
-<<<<<<< HEAD
 
 # Automatically locate and load .env file from root or backend directory
 root_env = Path(__file__).resolve().parent.parent / ".env"
@@ -11,9 +11,6 @@ if root_env.exists():
     load_dotenv(root_env)
 elif backend_env.exists():
     load_dotenv(backend_env)
-=======
-from typing import List
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Krishisetu - Smart Agricultural Marketplace & Equipment Rental"
@@ -46,10 +43,7 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive = True
-<<<<<<< HEAD
-=======
-        env_file = ".env"
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
+
         extra = "ignore"
 
 settings = Settings()

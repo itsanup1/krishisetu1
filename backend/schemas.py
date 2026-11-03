@@ -36,11 +36,7 @@ class Token(BaseModel):
 
 class LoginRequest(BaseModel):
     email: EmailStr
-<<<<<<< HEAD
     password: Optional[str] = None
-=======
-    password: Optional[str] = "password123"
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 # Product Schemas
 class ProductBase(BaseModel):
@@ -94,11 +90,7 @@ class CartItemResponse(BaseModel):
         from_attributes = True
 
 # Order Schemas
-<<<<<<< HEAD
 class OrderItemCreate(BaseModel):
-=======
-class OrderItemInput(BaseModel):
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
     product_id: int
     quantity: int
     price_at_purchase: Optional[float] = None
@@ -118,11 +110,7 @@ class OrderCreate(BaseModel):
     delivery_address: Optional[str] = "Registered Farm Address"
     razorpay_order_id: Optional[str] = None
     razorpay_payment_id: Optional[str] = None
-<<<<<<< HEAD
     items: Optional[List[OrderItemCreate]] = None
-=======
-    items: Optional[List[OrderItemInput]] = None
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 class OrderUpdateStatus(BaseModel):
     status: OrderStatus

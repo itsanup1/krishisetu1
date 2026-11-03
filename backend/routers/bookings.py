@@ -12,7 +12,6 @@ from backend.scheduler import process_expired_bookings
 router = APIRouter(prefix="/api/bookings", tags=["Equipment Bookings & FCFS Queue"])
 
 def format_booking_response(b: BookingRequest) -> BookingResponse:
-<<<<<<< HEAD
     resp = BookingResponse.model_validate(b)
     if b.farmer:
         resp.farmer_name = b.farmer.name
@@ -21,27 +20,6 @@ def format_booking_response(b: BookingRequest) -> BookingResponse:
         resp.equipment_name = b.equipment.name
         resp.equipment_location = b.equipment.location
     return resp
-=======
-    return BookingResponse(
-        id=b.id,
-        farmer_id=b.farmer_id,
-        farmer_name=b.farmer.name if b.farmer else "Farmer",
-        farmer_phone=b.farmer.phone if b.farmer else None,
-        equipment_id=b.equipment_id,
-        equipment_name=b.equipment.name if b.equipment else f"Equipment #{b.equipment_id}",
-        equipment_type=b.equipment.type if b.equipment else None,
-        equipment_rate=b.equipment.rate if b.equipment else None,
-        equipment_rate_unit=b.equipment.rate_unit if b.equipment else None,
-        equipment_location=b.equipment.location if b.equipment else None,
-        start_date=b.start_date,
-        end_date=b.end_date,
-        status=b.status,
-        queue_position=b.queue_position,
-        confirmation_deadline=b.confirmation_deadline,
-        created_at=b.created_at,
-        updated_at=getattr(b, "updated_at", None),
-    )
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.post("", response_model=BookingResponse, status_code=status.HTTP_201_CREATED)
 def create_booking(

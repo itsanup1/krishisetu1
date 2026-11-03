@@ -92,11 +92,7 @@ export const Cart: React.FC = () => {
     }
   };
 
-<<<<<<< HEAD
   const handlePaymentSuccess = async (data: {
-=======
-  const handlePaymentSuccess = async (paymentData: {
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
     razorpay_order_id: string;
     razorpay_payment_id: string;
     razorpay_signature: string;
@@ -108,17 +104,10 @@ export const Cart: React.FC = () => {
       setIsProcessing(true);
       // Verify payment signature on backend (or mock fallback)
       await api.verifyPayment({
-<<<<<<< HEAD
         order_id: targetOrderId,
         razorpay_order_id: data.razorpay_order_id,
         razorpay_payment_id: data.razorpay_payment_id,
         razorpay_signature: data.razorpay_signature,
-=======
-        order_id: paymentDetails.orderId,
-        razorpay_order_id: paymentData.razorpay_order_id || paymentDetails.razorpayOrderId,
-        razorpay_payment_id: paymentData.razorpay_payment_id,
-        razorpay_signature: paymentData.razorpay_signature,
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
       });
 
       // Clear local cart & redirect to order detail

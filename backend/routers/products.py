@@ -46,7 +46,6 @@ def get_products(
                 User.name.ilike(q),
             )
         )
-<<<<<<< HEAD
     products = query.order_by(Product.created_at.desc()).all()
     # Populate vendor name
     result = []
@@ -56,40 +55,24 @@ def get_products(
             p_dict.vendor_name = p.vendor.name
         result.append(p_dict)
     return result
-=======
-    products = query.order_by(Product.id.asc()).all()
-    return [format_product_response(p) for p in products]
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.get("/my", response_model=List[ProductResponse])
 def get_my_products(
     current_user: User = Depends(require_roles([UserRole.VENDOR, UserRole.ADMIN])),
     db: Session = Depends(get_db),
 ):
-<<<<<<< HEAD
     products = db.query(Product).filter(Product.vendor_id == current_user.id).all()
     return [ProductResponse.model_validate(p) for p in products]
-=======
-    if current_user.role == UserRole.ADMIN:
-        products = db.query(Product).order_by(Product.id.asc()).all()
-    else:
-        products = db.query(Product).filter(Product.vendor_id == current_user.id).order_by(Product.id.asc()).all()
-    return [format_product_response(p) for p in products]
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.get("/{id}", response_model=ProductResponse)
 def get_product_by_id(id: int, db: Session = Depends(get_db)):
     product = db.query(Product).filter(Product.id == id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
-<<<<<<< HEAD
     resp = ProductResponse.model_validate(product)
     if product.vendor:
         resp.vendor_name = product.vendor.name
     return resp
-=======
-    return format_product_response(product)
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.post("", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 def create_product(
@@ -113,13 +96,9 @@ def create_product(
     db.add(product)
     db.commit()
     db.refresh(product)
-<<<<<<< HEAD
     resp = ProductResponse.model_validate(product)
     resp.vendor_name = current_user.name
     return resp
-=======
-    return format_product_response(product)
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.put("/{id}", response_model=ProductResponse)
 def update_product(
@@ -145,13 +124,9 @@ def update_product(
 
     db.commit()
     db.refresh(product)
-<<<<<<< HEAD
     resp = ProductResponse.model_validate(product)
     resp.vendor_name = current_user.name
     return resp
-=======
-    return format_product_response(product)
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_product(

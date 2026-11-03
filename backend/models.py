@@ -182,7 +182,6 @@ class BookingRequest(Base):
     farmer = relationship("User", back_populates="bookings")
     equipment = relationship("Equipment", back_populates="bookings")
 
-<<<<<<< HEAD
     @property
     def farmer_name(self) -> str:
         return self.farmer.name if self.farmer else "Farmer"
@@ -198,5 +197,3 @@ class BookingRequest(Base):
     @property
     def equipment_location(self) -> str:
         return self.equipment.location if self.equipment else ""
-=======
->>>>>>> 3d189fbcd7a35f20565ff5c523577f33c19fe422
