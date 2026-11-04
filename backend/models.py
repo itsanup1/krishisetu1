@@ -77,6 +77,7 @@ class Product(Base):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True, index=True)
+    product_id = Column(String(20), unique=True, index=True, nullable=False)  # e.g. P001
     vendor_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     name = Column(String(255), index=True, nullable=False)
     category = Column(Enum(ProductCategory, native_enum=False), nullable=False, index=True)
@@ -140,6 +141,7 @@ class Equipment(Base):
     __tablename__ = "equipment"
 
     id = Column(Integer, primary_key=True, index=True)
+    rental_id = Column(String(20), unique=True, index=True, nullable=False)  # e.g. R001
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     name = Column(String(255), index=True, nullable=False)
     type = Column(Enum(EquipmentType, native_enum=False), nullable=False, index=True)

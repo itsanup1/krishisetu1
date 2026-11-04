@@ -75,6 +75,7 @@ def seed():
         # 2. Seed All 14 Full Products
         products_data = [
             {
+                "product_id": "P001",
                 "vendor_id": vendor1.id,
                 "name": "Certified Golden Wheat Seeds - HD 2967 (50kg Sack)",
                 "category": ProductCategory.SEEDS,
@@ -84,6 +85,7 @@ def seed():
                 "image_url": "/src/assets/images/wheat_seeds_sack_1791500903435.jpg",
             },
             {
+                "product_id": "P002",
                 "vendor_id": vendor2.id,
                 "name": "Royal Harvest Pusa-1121 Basmati Paddy Seeds (25kg)",
                 "category": ProductCategory.SEEDS,
@@ -93,6 +95,7 @@ def seed():
                 "image_url": "/src/assets/images/basmati_paddy_seeds_1791500920007.jpg",
             },
             {
+                "product_id": "P003",
                 "vendor_id": vendor1.id,
                 "name": "Progeny F1 Hybrid Bt Cotton Seeds - ACT-777 (450g)",
                 "category": ProductCategory.SEEDS,
@@ -102,6 +105,7 @@ def seed():
                 "image_url": "/src/assets/images/hybrid_cotton_seeds_1791500931145.jpg",
             },
             {
+                "product_id": "P004",
                 "vendor_id": vendor2.id,
                 "name": "High-Yield Hybrid Maize & JS-9560 Soybean Combo (25kg)",
                 "category": ProductCategory.SEEDS,
@@ -111,6 +115,7 @@ def seed():
                 "image_url": "/src/assets/images/soybean_maize_seeds_1791500943314.jpg",
             },
             {
+                "product_id": "P005",
                 "vendor_id": vendor1.id,
                 "name": "GrowMax NPK 19:19:19 100% Water Soluble Fertilizer (25kg)",
                 "category": ProductCategory.FERTILIZER,
@@ -120,6 +125,7 @@ def seed():
                 "image_url": "/src/assets/images/npk_fertilizer_bag_1791500953747.jpg",
             },
             {
+                "product_id": "P006",
                 "vendor_id": vendor2.id,
                 "name": "Krishi Neem Coated Urea 46% Nitrogen Fertilizer (45kg)",
                 "category": ProductCategory.FERTILIZER,
@@ -129,6 +135,7 @@ def seed():
                 "image_url": "/src/assets/images/neem_coated_urea_1791500964626.jpg",
             },
             {
+                "product_id": "P007",
                 "vendor_id": vendor1.id,
                 "name": "Granular DAP (18:46:0) & Zinc Sulphate 33% Combo Pack (50kg)",
                 "category": ProductCategory.FERTILIZER,
@@ -138,6 +145,7 @@ def seed():
                 "image_url": "/src/assets/images/dap_zinc_fertilizer_1791500980608.jpg",
             },
             {
+                "product_id": "P008",
                 "vendor_id": vendor2.id,
                 "name": "Eco-Gro Enriched Organic Vermicompost & Bio-Potash (50kg)",
                 "category": ProductCategory.FERTILIZER,
@@ -147,6 +155,7 @@ def seed():
                 "image_url": "/src/assets/images/organic_vermicompost_potash_1791500991903.jpg",
             },
             {
+                "product_id": "P009",
                 "vendor_id": vendor1.id,
                 "name": "Cold-Pressed Azadirachtin 10000 ppm Neem Oil Bio-Pesticide (5L)",
                 "category": ProductCategory.PESTICIDE,
@@ -156,6 +165,7 @@ def seed():
                 "image_url": "/src/assets/images/neem_oil_biopesticide_1791501004700.jpg",
             },
             {
+                "product_id": "P010",
                 "vendor_id": vendor1.id,
                 "name": "CropShield Systemic Fungicide & Broad-Spectrum Insecticide Kit (1L)",
                 "category": ProductCategory.PESTICIDE,
@@ -165,6 +175,7 @@ def seed():
                 "image_url": "/src/assets/images/crop_fungicide_insecticide_1791501015614.jpg",
             },
             {
+                "product_id": "P011",
                 "vendor_id": vendor3.id,
                 "name": "DripLine 16mm Inline HDPE Irrigation Pipe Coil & Valve Kit (300m)",
                 "category": ProductCategory.IRRIGATION,
@@ -174,6 +185,7 @@ def seed():
                 "image_url": "/src/assets/images/hdpe_irrigation_pipes_1791501025898.jpg",
             },
             {
+                "product_id": "P012",
                 "vendor_id": vendor3.id,
                 "name": "AgriFlow 110mm Quick-Connect PVC Sprinkler Pipes & Brass Rain Gun",
                 "category": ProductCategory.IRRIGATION,
@@ -183,6 +195,7 @@ def seed():
                 "image_url": "/src/assets/images/rain_gun_sprinkler_pipes_1791501234370.jpg",
             },
             {
+                "product_id": "P013",
                 "vendor_id": vendor3.id,
                 "name": "FarmQuip 16L 12V-8Ah Li-Ion Battery Knapsack Sprayer with Brass Lance",
                 "category": ProductCategory.SPRAYER,
@@ -192,6 +205,7 @@ def seed():
                 "image_url": "/src/assets/images/battery_knapsack_sprayer_1791501046903.jpg",
             },
             {
+                "product_id": "P014",
                 "vendor_id": vendor3.id,
                 "name": "Solo 435 Petrol Motorized Knapsack Mist Blower & Duster Sprayer (20L)",
                 "category": ProductCategory.SPRAYER,
@@ -212,6 +226,7 @@ def seed():
         # 3. Seed All 10 Full Machinery Units
         equipment_data = [
             {
+                "rental_id": "R001",
                 "owner_id": farmer1.id,
                 "name": "Mahindra 575 DI XP Plus 50 HP 4WD Tractor",
                 "type": EquipmentType.TRACTOR,
@@ -223,6 +238,7 @@ def seed():
                 "image_url": "/src/assets/images/mahindra_red_tractor_1791501058296.jpg",
             },
             {
+                "rental_id": "R002",
                 "owner_id": farmer2.id,
                 "name": "John Deere 5310 PowerTech 55 HP 4WD Utility Tractor",
                 "type": EquipmentType.TRACTOR,
@@ -234,6 +250,7 @@ def seed():
                 "image_url": "/src/assets/images/john_deere_green_tractor_1791501071564.jpg",
             },
             {
+                "rental_id": "R003",
                 "owner_id": owner3.id,
                 "name": "New Holland 5500 Turbo Super 48 HP Tractor with Canopy",
                 "type": EquipmentType.TRACTOR,
@@ -245,6 +262,7 @@ def seed():
                 "image_url": "/src/assets/images/swaraj_blue_tractor_1791501084071.jpg",
             },
             {
+                "rental_id": "R004",
                 "owner_id": farmer1.id,
                 "name": "Maschio Gaspardo Virat Pro 7 Feet Heavy Duty Rotavator",
                 "type": EquipmentType.ROTAVATOR,
@@ -256,6 +274,7 @@ def seed():
                 "image_url": "/src/assets/images/rotavator_rotary_tiller_1791501094685.jpg",
             },
             {
+                "rental_id": "R005",
                 "owner_id": farmer2.id,
                 "name": "John Deere W70 Self-Propelled Multi-Crop Combine Harvester",
                 "type": EquipmentType.HARVESTER,
@@ -267,6 +286,7 @@ def seed():
                 "image_url": "/src/assets/images/combine_harvester_machine_1791501105447.jpg",
             },
             {
+                "rental_id": "R006",
                 "owner_id": owner3.id,
                 "name": "Yanmar YH600 Rubber-Track Paddy Combine Harvester",
                 "type": EquipmentType.HARVESTER,
@@ -278,6 +298,7 @@ def seed():
                 "image_url": "/src/assets/images/paddy_combine_harvester_1791501270303.jpg",
             },
             {
+                "rental_id": "R007",
                 "owner_id": farmer1.id,
                 "name": "Fieldking 9-Tyne Spring Loaded Cultivator & Reversible MB Plough",
                 "type": EquipmentType.CULTIVATOR,
@@ -289,6 +310,7 @@ def seed():
                 "image_url": "/src/assets/images/spring_tyne_cultivator_1791501117714.jpg",
             },
             {
+                "rental_id": "R008",
                 "owner_id": farmer2.id,
                 "name": "FarmPower 9-Row Zero-Till Multi-Crop Seed Cum Fertilizer Drill",
                 "type": EquipmentType.SEED_DRILL,
@@ -300,6 +322,7 @@ def seed():
                 "image_url": "/src/assets/images/seed_cum_fertilizer_drill_1791501128600.jpg",
             },
             {
+                "rental_id": "R009",
                 "owner_id": farmer1.id,
                 "name": "Aspee HTP 500L Tractor Mounted Hydraulic Boom Sprayer",
                 "type": EquipmentType.SPRAYER,
@@ -311,6 +334,7 @@ def seed():
                 "image_url": "/src/assets/images/tractor_boom_sprayer_1791501140854.jpg",
             },
             {
+                "rental_id": "R010",
                 "owner_id": owner3.id,
                 "name": "Apogee AP-20 Automatic Laser Guided Land Leveler Bucket",
                 "type": EquipmentType.PLOUGH_LEVELER,
