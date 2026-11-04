@@ -88,6 +88,7 @@ def upgrade() -> None:
         'equipment',
         sa.Column('id', sa.Integer(), nullable=False, primary_key=True),
         sa.Column('rental_id', sa.String(length=20), nullable=False, unique=True),
+        sa.Column('product_id', sa.String(length=20), nullable=True),
         sa.Column('owner_id', sa.Integer(), sa.ForeignKey('users.id'), nullable=False),
         sa.Column('name', sa.String(length=255), nullable=False),
         sa.Column('type', sa.String(length=50), nullable=False),
@@ -103,6 +104,7 @@ def upgrade() -> None:
         sa.Column('updated_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP')),
     )
     op.create_index('ix_equipment_rental_id', 'equipment', ['rental_id'], unique=True)
+    op.create_index('ix_equipment_product_id', 'equipment', ['product_id'], unique=False)
     op.create_index('ix_equipment_type', 'equipment', ['type'], unique=False)
     op.create_index('ix_equipment_location', 'equipment', ['location'], unique=False)
 

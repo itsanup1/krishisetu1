@@ -163,6 +163,7 @@ class EquipmentUpdate(BaseModel):
 class EquipmentResponse(EquipmentBase):
     id: int
     rental_id: str
+    product_id: Optional[str] = None
     owner_id: int
     owner_name: Optional[str] = None
     owner_phone: Optional[str] = None

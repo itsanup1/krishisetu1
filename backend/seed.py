@@ -228,6 +228,7 @@ def seed(reset: bool = False):
         equipment_data = [
             {
                 "rental_id": "R001",
+                "product_id": "R001",
                 "owner_id": farmer1.id,
                 "name": "Mahindra 575 DI XP Plus 50 HP 4WD Tractor",
                 "type": EquipmentType.TRACTOR,
@@ -240,6 +241,7 @@ def seed(reset: bool = False):
             },
             {
                 "rental_id": "R002",
+                "product_id": "R002",
                 "owner_id": farmer2.id,
                 "name": "John Deere 5310 PowerTech 55 HP 4WD Utility Tractor",
                 "type": EquipmentType.TRACTOR,
@@ -252,6 +254,7 @@ def seed(reset: bool = False):
             },
             {
                 "rental_id": "R003",
+                "product_id": "R003",
                 "owner_id": owner3.id,
                 "name": "New Holland 5500 Turbo Super 48 HP Tractor with Canopy",
                 "type": EquipmentType.TRACTOR,
@@ -264,6 +267,7 @@ def seed(reset: bool = False):
             },
             {
                 "rental_id": "R004",
+                "product_id": "R004",
                 "owner_id": farmer1.id,
                 "name": "Maschio Gaspardo Virat Pro 7 Feet Heavy Duty Rotavator",
                 "type": EquipmentType.ROTAVATOR,
@@ -276,6 +280,7 @@ def seed(reset: bool = False):
             },
             {
                 "rental_id": "R005",
+                "product_id": "R005",
                 "owner_id": farmer2.id,
                 "name": "John Deere W70 Self-Propelled Multi-Crop Combine Harvester",
                 "type": EquipmentType.HARVESTER,
@@ -288,6 +293,7 @@ def seed(reset: bool = False):
             },
             {
                 "rental_id": "R006",
+                "product_id": "R006",
                 "owner_id": owner3.id,
                 "name": "Yanmar YH600 Rubber-Track Paddy Combine Harvester",
                 "type": EquipmentType.HARVESTER,
@@ -300,6 +306,7 @@ def seed(reset: bool = False):
             },
             {
                 "rental_id": "R007",
+                "product_id": "R007",
                 "owner_id": farmer1.id,
                 "name": "Fieldking 9-Tyne Spring Loaded Cultivator & Reversible MB Plough",
                 "type": EquipmentType.CULTIVATOR,
@@ -312,6 +319,7 @@ def seed(reset: bool = False):
             },
             {
                 "rental_id": "R008",
+                "product_id": "R008",
                 "owner_id": farmer2.id,
                 "name": "FarmPower 9-Row Zero-Till Multi-Crop Seed Cum Fertilizer Drill",
                 "type": EquipmentType.SEED_DRILL,
@@ -324,6 +332,7 @@ def seed(reset: bool = False):
             },
             {
                 "rental_id": "R009",
+                "product_id": "R009",
                 "owner_id": farmer1.id,
                 "name": "Aspee HTP 500L Tractor Mounted Hydraulic Boom Sprayer",
                 "type": EquipmentType.SPRAYER,
@@ -336,6 +345,7 @@ def seed(reset: bool = False):
             },
             {
                 "rental_id": "R010",
+                "product_id": "R010",
                 "owner_id": owner3.id,
                 "name": "Apogee AP-20 Automatic Laser Guided Land Leveler Bucket",
                 "type": EquipmentType.PLOUGH_LEVELER,

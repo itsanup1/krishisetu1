@@ -142,6 +142,7 @@ class Equipment(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     rental_id = Column(String(20), unique=True, index=True, nullable=False)  # e.g. R001
+    product_id = Column(String(20), index=True, nullable=True)  # e.g. R001 (alias for rental items)
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     name = Column(String(255), index=True, nullable=False)
     type = Column(Enum(EquipmentType, native_enum=False), nullable=False, index=True)
