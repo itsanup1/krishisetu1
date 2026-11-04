@@ -17,8 +17,9 @@ from backend.models import (
 )
 from backend.auth import get_password_hash
 
-def seed():
-    Base.metadata.drop_all(bind=engine)
+def seed(reset: bool = False):
+    if reset:
+        Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
 

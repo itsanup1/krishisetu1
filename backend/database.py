@@ -15,7 +15,7 @@ if not DATABASE_URL or DATABASE_URL.startswith("sqlite"):
     engine = create_engine(DATABASE_URL or "sqlite:///./krishisetu_demo.db", connect_args={"check_same_thread": False})
 else:
     try:
-        test_engine = create_engine(DATABASE_URL, pool_pre_ping=True, connect_args={"connect_timeout": 3})
+        test_engine = create_engine(DATABASE_URL, pool_pre_ping=True, connect_args={"connect_timeout": 10})
         # Test connection immediately
         with test_engine.connect() as conn:
             pass
