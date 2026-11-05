@@ -49,7 +49,7 @@ class ProductBase(BaseModel):
     image_url: str
 
 class ProductCreate(ProductBase):
-    pass
+    product_id: Optional[str] = None
 
 class ProductUpdate(BaseModel):
     name: Optional[str] = None
@@ -146,7 +146,8 @@ class EquipmentBase(BaseModel):
     image_url: str
 
 class EquipmentCreate(EquipmentBase):
-    pass
+    rental_id: Optional[str] = None
+    product_id: Optional[str] = None
 
 class EquipmentUpdate(BaseModel):
     name: Optional[str] = None

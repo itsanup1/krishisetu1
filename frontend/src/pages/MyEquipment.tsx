@@ -89,10 +89,15 @@ export const MyEquipment: React.FC = () => {
                     alt={eq.name}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-3 left-3">
+                  <div className="absolute top-3 left-3 flex items-center gap-1.5">
                     <span className="bg-amber-100 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-200">
                       {eq.type}
                     </span>
+                    {(eq.rental_id || eq.product_id) && (
+                      <span className="bg-slate-900/80 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded backdrop-blur-xs">
+                        ID: {eq.rental_id || eq.product_id}
+                      </span>
+                    )}
                   </div>
                 </div>
 

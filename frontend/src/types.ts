@@ -24,6 +24,7 @@ export type ProductCategory = 'SEEDS' | 'FERTILIZER' | 'PESTICIDE' | 'IRRIGATION
 
 export interface Product {
   id: number;
+  product_id?: string;
   vendor_id: number;
   name: string;
   category: ProductCategory;
@@ -86,6 +87,8 @@ export type RateUnit = 'HOUR' | 'DAY';
 
 export interface Equipment {
   id: number;
+  rental_id?: string;
+  product_id?: string;
   owner_id: number;
   owner_name?: string;
   owner_phone?: string;

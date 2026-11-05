@@ -14,7 +14,10 @@ elif backend_env.exists():
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Krishisetu - Smart Agricultural Marketplace & Equipment Rental"
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./krishisetu_demo.db")
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL",
+        "postgresql://postgres.iogtwvmfqmlwthyarjps:anup%40patil1@aws-0-ap-southeast-2.pooler.supabase.com:5432/postgres?sslmode=require"
+    )
     SECRET_KEY: str = os.getenv("SECRET_KEY", "btech_krishisetu_super_secret_jwt_key_2026_safe")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", str(60 * 24 * 7)))  # 7 days

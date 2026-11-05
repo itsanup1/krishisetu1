@@ -207,6 +207,14 @@ export const EquipmentDetail: React.FC = () => {
               {equipment.name}
             </h1>
 
+            {(equipment.rental_id || equipment.product_id) && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-bold bg-amber-50 text-amber-900 px-2.5 py-1 rounded border border-amber-200">
+                  Rental ID: {equipment.rental_id || equipment.product_id}
+                </span>
+              </div>
+            )}
+
             {/* Location & Owner info */}
             <div className="space-y-2 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
               <div className="flex items-center gap-2">

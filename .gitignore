@@ -7,3 +7,8 @@ coverage/
 .env*
 !.env.example
 .vercel
+
+*.db
+*.sqlite*
+__pycache__/
+*.pyc

@@ -77,9 +77,14 @@ export const BookingCard: React.FC<BookingCardProps> = ({
           <span className="text-xs font-mono text-slate-400 block">
             Booking #{booking.id} · Requested {formatDate(booking.created_at)}
           </span>
-          <h4 className="text-base font-bold text-slate-900 mt-0.5">
-            {booking.equipment_name || `Equipment #${booking.equipment_id}`}
-          </h4>
+          <div className="flex items-center gap-2 mt-0.5">
+            <h4 className="text-base font-bold text-slate-900">
+              {booking.equipment_name || `Equipment #${booking.equipment_id}`}
+            </h4>
+            <span className="text-[10px] font-mono font-bold bg-amber-50 text-amber-900 px-1.5 py-0.5 rounded border border-amber-200">
+              RID: R{String(booking.equipment_id).padStart(3, '0')}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {isQueued && (

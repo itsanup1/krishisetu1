@@ -19,7 +19,7 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 5000,
+  timeout: 10000,
 });
 
 // Attach token to outgoing requests
@@ -32,14 +32,14 @@ apiClient.interceptors.request.use((config) => {
 });
 
 // Client-side Database Initial State for Fallback / Offline Mode
-const CATALOG_VERSION = 'v4_public_assets_24';
+const CATALOG_VERSION = 'v5_with_product_ids_24';
 const STORAGE_KEYS = {
-  USERS: 'krishi_mock_users_v4',
-  PRODUCTS: 'krishi_mock_products_v4',
-  EQUIPMENT: 'krishi_mock_equipment_v4',
+  USERS: 'krishi_mock_users_v5',
+  PRODUCTS: 'krishi_mock_products_v5',
+  EQUIPMENT: 'krishi_mock_equipment_v5',
   CART: 'krishi_mock_cart',
   ORDERS: 'krishi_mock_orders',
-  BOOKINGS: 'krishi_mock_bookings_v4',
+  BOOKINGS: 'krishi_mock_bookings_v5',
   AVAILABILITY: 'krishi_mock_availability',
   CONFIG: 'krishi_mock_config_version',
 };
@@ -121,6 +121,7 @@ const DEFAULT_USERS: User[] = [
 const DEFAULT_PRODUCTS: Product[] = [
   {
     id: 1,
+    product_id: 'P001',
     vendor_id: 3,
     name: 'Certified Golden Wheat Seeds - HD 2967 (50kg Sack)',
     category: 'SEEDS',
@@ -134,6 +135,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 2,
+    product_id: 'P002',
     vendor_id: 5,
     name: 'Royal Harvest Pusa-1121 Basmati Paddy Seeds (25kg)',
     category: 'SEEDS',
@@ -147,6 +149,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 3,
+    product_id: 'P003',
     vendor_id: 3,
     name: 'Progeny F1 Hybrid Bt Cotton Seeds - ACT-777 (450g)',
     category: 'SEEDS',
@@ -160,6 +163,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 4,
+    product_id: 'P004',
     vendor_id: 5,
     name: 'High-Yield Hybrid Maize & JS-9560 Soybean Combo (25kg)',
     category: 'SEEDS',
@@ -173,6 +177,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 5,
+    product_id: 'P005',
     vendor_id: 3,
     name: 'GrowMax NPK 19:19:19 100% Water Soluble Fertilizer (25kg)',
     category: 'FERTILIZER',
@@ -186,6 +191,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 6,
+    product_id: 'P006',
     vendor_id: 5,
     name: 'Krishi Neem Coated Urea 46% Nitrogen Fertilizer (45kg)',
     category: 'FERTILIZER',
@@ -199,6 +205,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 7,
+    product_id: 'P007',
     vendor_id: 3,
     name: 'Granular DAP (18:46:0) & Zinc Sulphate 33% Combo Pack (50kg)',
     category: 'FERTILIZER',
@@ -212,6 +219,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 8,
+    product_id: 'P008',
     vendor_id: 5,
     name: 'Eco-Gro Enriched Organic Vermicompost & Bio-Potash (50kg)',
     category: 'FERTILIZER',
@@ -225,6 +233,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 9,
+    product_id: 'P009',
     vendor_id: 3,
     name: 'Cold-Pressed Azadirachtin 10000 ppm Neem Oil Bio-Pesticide (5L)',
     category: 'PESTICIDE',
@@ -238,6 +247,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 10,
+    product_id: 'P010',
     vendor_id: 3,
     name: 'CropShield Systemic Fungicide & Broad-Spectrum Insecticide Kit (1L)',
     category: 'PESTICIDE',
@@ -251,6 +261,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 11,
+    product_id: 'P011',
     vendor_id: 6,
     name: 'DripLine 16mm Inline HDPE Irrigation Pipe Coil & Valve Kit (300m)',
     category: 'IRRIGATION',
@@ -264,6 +275,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 12,
+    product_id: 'P012',
     vendor_id: 6,
     name: 'AgriFlow 110mm Quick-Connect PVC Sprinkler Pipes & Brass Rain Gun',
     category: 'IRRIGATION',
@@ -277,6 +289,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 13,
+    product_id: 'P013',
     vendor_id: 6,
     name: 'FarmQuip 16L 12V-8Ah Li-Ion Battery Knapsack Sprayer with Brass Lance',
     category: 'SPRAYER',
@@ -290,6 +303,7 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 14,
+    product_id: 'P014',
     vendor_id: 6,
     name: 'Solo 435 Petrol Motorized Knapsack Mist Blower & Duster Sprayer (20L)',
     category: 'SPRAYER',
@@ -306,6 +320,8 @@ const DEFAULT_PRODUCTS: Product[] = [
 const DEFAULT_EQUIPMENT: Equipment[] = [
   {
     id: 1,
+    rental_id: 'R001',
+    product_id: 'R001',
     owner_id: 1,
     owner_name: 'Ramesh Kumar',
     owner_phone: '9876543210',
@@ -323,6 +339,8 @@ const DEFAULT_EQUIPMENT: Equipment[] = [
   },
   {
     id: 2,
+    rental_id: 'R002',
+    product_id: 'R002',
     owner_id: 2,
     owner_name: 'Suresh Patil',
     owner_phone: '9876543211',
@@ -340,6 +358,8 @@ const DEFAULT_EQUIPMENT: Equipment[] = [
   },
   {
     id: 3,
+    rental_id: 'R003',
+    product_id: 'R003',
     owner_id: 7,
     owner_name: 'Vikram Deshmukh',
     owner_phone: '9890445566',
@@ -357,6 +377,8 @@ const DEFAULT_EQUIPMENT: Equipment[] = [
   },
   {
     id: 4,
+    rental_id: 'R004',
+    product_id: 'R004',
     owner_id: 1,
     owner_name: 'Ramesh Kumar',
     owner_phone: '9876543210',
@@ -374,6 +396,8 @@ const DEFAULT_EQUIPMENT: Equipment[] = [
   },
   {
     id: 5,
+    rental_id: 'R005',
+    product_id: 'R005',
     owner_id: 2,
     owner_name: 'Suresh Patil',
     owner_phone: '9876543211',
@@ -391,6 +415,8 @@ const DEFAULT_EQUIPMENT: Equipment[] = [
   },
   {
     id: 6,
+    rental_id: 'R006',
+    product_id: 'R006',
     owner_id: 7,
     owner_name: 'Vikram Deshmukh',
     owner_phone: '9890445566',
@@ -408,6 +434,8 @@ const DEFAULT_EQUIPMENT: Equipment[] = [
   },
   {
     id: 7,
+    rental_id: 'R007',
+    product_id: 'R007',
     owner_id: 1,
     owner_name: 'Ramesh Kumar',
     owner_phone: '9876543210',
@@ -425,6 +453,8 @@ const DEFAULT_EQUIPMENT: Equipment[] = [
   },
   {
     id: 8,
+    rental_id: 'R008',
+    product_id: 'R008',
     owner_id: 2,
     owner_name: 'Suresh Patil',
     owner_phone: '9876543211',
@@ -442,6 +472,8 @@ const DEFAULT_EQUIPMENT: Equipment[] = [
   },
   {
     id: 9,
+    rental_id: 'R009',
+    product_id: 'R009',
     owner_id: 1,
     owner_name: 'Ramesh Kumar',
     owner_phone: '9876543210',
@@ -459,6 +491,8 @@ const DEFAULT_EQUIPMENT: Equipment[] = [
   },
   {
     id: 10,
+    rental_id: 'R010',
+    product_id: 'R010',
     owner_id: 7,
     owner_name: 'Vikram Deshmukh',
     owner_phone: '9890445566',
@@ -1165,7 +1199,7 @@ export const api = {
   // Check if live FastAPI backend is reachable
   async checkBackendHealth(): Promise<boolean> {
     try {
-      const res = await apiClient.get('/health', { timeout: 1500 });
+      const res = await apiClient.get('/health', { timeout: 5000 });
       return res.status === 200;
     } catch {
       return false;
@@ -1257,8 +1291,9 @@ export const api = {
     try {
       const res = await apiClient.post('/products', data);
       return res.data;
-    } catch {
-      return mockBackend.createProduct(data);
+    } catch (err) {
+      console.error('Failed to create product on backend:', err);
+      throw err;
     }
   },
 
@@ -1266,8 +1301,9 @@ export const api = {
     try {
       const res = await apiClient.put(`/products/${id}`, data);
       return res.data;
-    } catch {
-      return mockBackend.updateProduct(id, data);
+    } catch (err) {
+      console.error('Failed to update product on backend:', err);
+      throw err;
     }
   },
 
@@ -1275,8 +1311,9 @@ export const api = {
     try {
       await apiClient.delete(`/products/${id}`);
       return true;
-    } catch {
-      return mockBackend.deleteProduct(id);
+    } catch (err) {
+      console.error('Failed to delete product on backend:', err);
+      throw err;
     }
   },
 
@@ -1467,8 +1504,9 @@ export const api = {
     try {
       const res = await apiClient.post('/equipment', data);
       return res.data;
-    } catch {
-      return mockBackend.createEquipment(data);
+    } catch (err) {
+      console.error('Failed to create equipment on backend:', err);
+      throw err;
     }
   },
 
@@ -1476,8 +1514,9 @@ export const api = {
     try {
       const res = await apiClient.put(`/equipment/${id}`, data);
       return res.data;
-    } catch {
-      return mockBackend.updateEquipment(id, data);
+    } catch (err) {
+      console.error('Failed to update equipment on backend:', err);
+      throw err;
     }
   },
 
@@ -1485,8 +1524,9 @@ export const api = {
     try {
       await apiClient.delete(`/equipment/${id}`);
       return true;
-    } catch {
-      return mockBackend.deleteEquipment(id);
+    } catch (err) {
+      console.error('Failed to delete equipment on backend:', err);
+      throw err;
     }
   },
 

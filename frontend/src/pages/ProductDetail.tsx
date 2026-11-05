@@ -113,10 +113,17 @@ export const ProductDetail: React.FC = () => {
         {/* Product Details & Purchase Form */}
         <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-xs text-slate-500">
-              <Store className="w-4 h-4 text-emerald-600" />
-              <span>Seller:</span>
-              <span className="font-semibold text-slate-800">{product.vendor_name || 'Verified Agri Vendor'}</span>
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+              <div className="flex items-center gap-2">
+                <Store className="w-4 h-4 text-emerald-600" />
+                <span>Seller:</span>
+                <span className="font-semibold text-slate-800">{product.vendor_name || 'Verified Agri Vendor'}</span>
+              </div>
+              {product.product_id && (
+                <span className="bg-emerald-50 text-emerald-800 font-mono font-bold px-2 py-0.5 rounded border border-emerald-200">
+                  Product ID: {product.product_id}
+                </span>
+              )}
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">

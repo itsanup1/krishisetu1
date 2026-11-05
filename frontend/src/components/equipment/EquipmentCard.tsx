@@ -80,9 +80,16 @@ export const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
       {/* Details */}
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          <div className="flex items-center gap-1 text-[11px] text-slate-500 mb-1 font-medium">
-            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="truncate">{equipment.location}</span>
+          <div className="flex items-center justify-between gap-1 text-[11px] text-slate-500 mb-1 font-medium">
+            <div className="flex items-center gap-1 min-w-0">
+              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              <span className="truncate">{equipment.location}</span>
+            </div>
+            {(equipment.rental_id || equipment.product_id) && (
+              <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200 shrink-0">
+                ID: {equipment.rental_id || equipment.product_id}
+              </span>
+            )}
           </div>
 
           <Link

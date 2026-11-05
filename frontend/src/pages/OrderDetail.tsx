@@ -149,9 +149,14 @@ export const OrderDetail: React.FC = () => {
                     <span className="font-bold text-slate-900 block">
                       {item.product?.name || `Product #${item.product_id}`}
                     </span>
-                    <span className="text-[11px] text-slate-400">
-                      Category: {item.product?.category || 'Inputs'}
-                    </span>
+                    <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                      <span>Category: {item.product?.category || 'Inputs'}</span>
+                      {item.product?.product_id && (
+                        <span className="font-mono font-bold bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded border border-slate-200">
+                          PID: {item.product.product_id}
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="py-3 px-3 text-center font-semibold text-slate-800">
                     {item.quantity}

@@ -77,6 +77,7 @@ export const VendorProducts: React.FC = () => {
             <table className="w-full text-xs text-left">
               <thead className="bg-slate-50 text-slate-600 uppercase border-b border-slate-200 font-semibold text-[11px]">
                 <tr>
+                  <th className="py-3 px-4">PID</th>
                   <th className="py-3 px-4">Item</th>
                   <th className="py-3 px-4">Category</th>
                   <th className="py-3 px-4">Price</th>
@@ -87,6 +88,11 @@ export const VendorProducts: React.FC = () => {
               <tbody className="divide-y divide-slate-100">
                 {products.map((p) => (
                   <tr key={p.id} className="hover:bg-slate-50/60 transition">
+                    <td className="py-3 px-4">
+                      <span className="font-mono text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        {p.product_id || `P${p.id}`}
+                      </span>
+                    </td>
                     <td className="py-3 px-4 flex items-center gap-3">
                       <img
                         src={p.image_url}

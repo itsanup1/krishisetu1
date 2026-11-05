@@ -113,9 +113,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Content */}
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          <p className="text-[11px] text-slate-500 mb-1 truncate font-medium">
-            Seller: <span className="text-slate-700 font-semibold">{product.vendor_name || 'Verified Agro Vendor'}</span>
-          </p>
+          <div className="flex items-center justify-between gap-1 mb-1">
+            <p className="text-[11px] text-slate-500 truncate font-medium">
+              Seller: <span className="text-slate-700 font-semibold">{product.vendor_name || 'Verified Agro Vendor'}</span>
+            </p>
+            {product.product_id && (
+              <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200 shrink-0">
+                PID: {product.product_id}
+              </span>
+            )}
+          </div>
           <Link
             to={`/products/${product.id}`}
             className="text-sm font-bold text-slate-900 hover:text-emerald-700 line-clamp-2 transition mb-1.5 leading-snug"

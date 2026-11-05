@@ -14,6 +14,7 @@ export const EquipmentForm: React.FC = () => {
   const { user } = useAuth();
   const isEdit = Boolean(id);
 
+  const [rentalId, setRentalId] = useState('');
   const [name, setName] = useState('');
   const [type, setType] = useState<EquipmentType>('TRACTOR');
   const [description, setDescription] = useState('');
@@ -31,6 +32,7 @@ export const EquipmentForm: React.FC = () => {
     if (isEdit && id) {
       api.getEquipmentById(parseInt(id, 10)).then((eq) => {
         if (eq) {
+          if (eq.rental_id || eq.product_id) setRentalId(eq.rental_id || eq.product_id || '');
           setName(eq.name);
           setType(eq.type);
           setDescription(eq.description);
@@ -49,7 +51,7 @@ export const EquipmentForm: React.FC = () => {
     setIsLoading(true);
     setError(null);
 
-    const payload = {
+    const payload: any = {
       name,
       type,
       description,
@@ -58,6 +60,7 @@ export const EquipmentForm: React.FC = () => {
       specifications,
       location,
       image_url: imageUrl,
+      ...(rentalId.trim() ? { rental_id: rentalId.trim().toUpperCase(), product_id: rentalId.trim().toUpperCase() } : {}),
     };
 
     try {
@@ -105,13 +108,25 @@ export const EquipmentForm: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Equipment Model / Name"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Mahindra 575 DI Sarpanch 45HP"
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="sm:col-span-2">
+              <Input
+                label="Equipment Model / Name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Mahindra 575 DI Sarpanch 45HP"
+              />
+            </div>
+            <div>
+              <Input
+                label="Rental / Product ID"
+                value={rentalId}
+                onChange={(e) => setRentalId(e.target.value.toUpperCase())}
+                placeholder="e.g. R015 (auto if empty)"
+              />
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Select

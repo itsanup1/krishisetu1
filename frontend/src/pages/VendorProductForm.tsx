@@ -12,6 +12,7 @@ export const VendorProductForm: React.FC = () => {
   const navigate = useNavigate();
   const isEdit = Boolean(id);
 
+  const [productId, setProductId] = useState('');
   const [name, setName] = useState('');
   const [category, setCategory] = useState<ProductCategory>('SEEDS');
   const [description, setDescription] = useState('');
@@ -27,6 +28,7 @@ export const VendorProductForm: React.FC = () => {
     if (isEdit && id) {
       api.getProduct(parseInt(id, 10)).then((p) => {
         if (p) {
+          if (p.product_id) setProductId(p.product_id);
           setName(p.name);
           setCategory(p.category);
           setDescription(p.description);
@@ -43,13 +45,14 @@ export const VendorProductForm: React.FC = () => {
     setIsLoading(true);
     setError(null);
 
-    const payload = {
+    const payload: any = {
       name,
       category,
       description,
       price: parseFloat(price),
       stock: parseInt(stock, 10),
       image_url: imageUrl,
+      ...(productId.trim() ? { product_id: productId.trim().toUpperCase() } : {}),
     };
 
     try {
@@ -97,13 +100,25 @@ export const VendorProductForm: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Product Name"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Certified HD-2967 High Yield Wheat Seeds"
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="sm:col-span-2">
+              <Input
+                label="Product Name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Certified HD-2967 High Yield Wheat Seeds"
+              />
+            </div>
+            <div>
+              <Input
+                label="Product ID"
+                value={productId}
+                onChange={(e) => setProductId(e.target.value.toUpperCase())}
+                placeholder="e.g. P019 (auto-generated if empty)"
+              />
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Select

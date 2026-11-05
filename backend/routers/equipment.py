@@ -104,6 +104,18 @@ def get_equipment_bookings(id: int, db: Session = Depends(get_db)):
         results.append(resp)
     return results
 
+import re
+
+def get_next_rental_id(db: Session) -> str:
+    max_num = 0
+    items = db.query(Equipment.rental_id).all()
+    for (rid,) in items:
+        if rid and rid.startswith("R"):
+            digits = re.findall(r'\d+', rid)
+            if digits:
+                max_num = max(max_num, int(digits[0]))
+    return f"R{max_num + 1:03d}"
+
 @router.post("", response_model=EquipmentResponse, status_code=status.HTTP_201_CREATED)
 def create_equipment(
     eq_in: EquipmentCreate,
@@ -114,7 +126,10 @@ def create_equipment(
         current_user.is_equipment_owner = True
         db.add(current_user)
 
+    rid = eq_in.rental_id or eq_in.product_id or get_next_rental_id(db)
     equipment = Equipment(
+        rental_id=rid,
+        product_id=rid,
         owner_id=current_user.id,
         name=eq_in.name,
         type=eq_in.type,

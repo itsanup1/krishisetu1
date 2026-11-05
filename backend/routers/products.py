@@ -74,6 +74,18 @@ def get_product_by_id(id: int, db: Session = Depends(get_db)):
         resp.vendor_name = product.vendor.name
     return resp
 
+import re
+
+def get_next_product_id(db: Session) -> str:
+    max_num = 0
+    prods = db.query(Product.product_id).all()
+    for (pid,) in prods:
+        if pid and pid.startswith("P"):
+            digits = re.findall(r'\d+', pid)
+            if digits:
+                max_num = max(max_num, int(digits[0]))
+    return f"P{max_num + 1:03d}"
+
 @router.post("", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 def create_product(
     prod_in: ProductCreate,
@@ -83,7 +95,9 @@ def create_product(
     availability = prod_in.availability_status or (
         "OUT_OF_STOCK" if prod_in.stock <= 0 else "LOW_STOCK" if prod_in.stock <= 15 else "IN_STOCK"
     )
+    prod_id = prod_in.product_id or get_next_product_id(db)
     product = Product(
+        product_id=prod_id,
         vendor_id=current_user.id,
         name=prod_in.name,
         category=prod_in.category,

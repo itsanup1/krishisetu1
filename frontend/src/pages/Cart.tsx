@@ -157,9 +157,16 @@ export const Cart: React.FC = () => {
                     className="w-16 h-16 rounded-xl object-cover bg-slate-100 border border-slate-200 shrink-0"
                   />
                   <div>
-                    <span className="text-[10px] font-bold text-emerald-700 uppercase bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                      {prod?.category || 'INPUTS'}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold text-emerald-700 uppercase bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        {prod?.category || 'INPUTS'}
+                      </span>
+                      {prod?.product_id && (
+                        <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">
+                          PID: {prod.product_id}
+                        </span>
+                      )}
+                    </div>
                     <h3 className="text-sm font-bold text-slate-900 line-clamp-1 mt-0.5">
                       {prod?.name || `Product #${item.product_id}`}
                     </h3>

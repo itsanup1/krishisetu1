@@ -56,27 +56,8 @@ export const Navbar: React.FC = () => {
             </span>
           </div>
 
-          {/* Backend Status Badge & Discreet Persona Switcher */}
+          {/* Discreet Persona Switcher */}
           <div className="relative flex items-center gap-2.5">
-            <div
-              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium border ${
-                isBackendConnected
-                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                  : 'bg-amber-50 text-amber-700 border-amber-200'
-              }`}
-              title={
-                isBackendConnected
-                  ? 'Connected to FastAPI Backend (http://localhost:8000)'
-                  : 'Operating in Offline Demo Mode'
-              }
-            >
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  isBackendConnected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'
-                }`}
-              />
-              <span>{isBackendConnected ? 'Backend Connected' : 'Offline Demo Mode'}</span>
-            </div>
 
             <span className="text-[11px] text-slate-500 hidden md:inline">Current View:</span>
             <div className="relative">
