@@ -12,6 +12,7 @@ router = APIRouter(prefix="/api/equipment", tags=["Farm Equipment"])
 def format_equipment_response(eq: Equipment) -> EquipmentResponse:
     return EquipmentResponse(
         id=eq.id,
+        rental_id=getattr(eq, "rental_id", None) or f"EQ-{eq.id:04d}",
         owner_id=eq.owner_id,
         owner_name=eq.owner.name if eq.owner else "Equipment Owner",
         owner_phone=eq.owner.phone if eq.owner else None,
@@ -34,9 +35,16 @@ def get_equipment(
     type: Optional[str] = None,
     location: Optional[str] = None,
     search: Optional[str] = None,
+    min_price: Optional[float] = None,
+    max_price: Optional[float] = None,
     db: Session = Depends(get_db),
 ):
     query = db.query(Equipment).outerjoin(User, Equipment.owner_id == User.id)
+    query = query.filter(Equipment.availability_status != "DEACTIVATED")
+    if min_price is not None:
+        query = query.filter(Equipment.rate >= min_price)
+    if max_price is not None:
+        query = query.filter(Equipment.rate <= max_price)
     if type and type != "ALL":
         query = query.filter(Equipment.type == type)
     if location:
@@ -174,7 +182,7 @@ def update_equipment(
     resp.owner_name = current_user.name
     return resp
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}")
 def delete_equipment(
     id: int,
     current_user: User = Depends(get_current_user),
@@ -186,7 +194,8 @@ def delete_equipment(
     if eq.owner_id != current_user.id and current_user.role != UserRole.ADMIN:
         raise HTTPException(status_code=403, detail="Not authorized to delete this equipment")
 
-    db.delete(eq)
+    # Safe deactivation policy
+    eq.availability_status = "DEACTIVATED"
     db.commit()
-    return None
+    return {"status": "success", "message": "Equipment listing successfully deactivated."}
 

@@ -15,6 +15,7 @@ def format_product_response(p: Product) -> ProductResponse:
     )
     return ProductResponse(
         id=p.id,
+        product_id=getattr(p, "product_id", None) or f"PROD-{p.id:04d}",
         vendor_id=p.vendor_id,
         vendor_name=p.vendor.name if p.vendor else "Verified Agro Vendor",
         name=p.name,

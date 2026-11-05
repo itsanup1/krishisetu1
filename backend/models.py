@@ -78,6 +78,7 @@ class User(Base):
     equipment_listings = relationship("EquipmentListing", back_populates="owner")
     rental_records = relationship("RentalRecord", back_populates="farmer")
     rental_queue_entries = relationship("RentalQueue", back_populates="farmer")
+    notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")
 
 class Product(Base):
     __tablename__ = "products"
@@ -273,6 +274,8 @@ class RentalRecord(Base):
     def equipment_name(self) -> str:
         return self.listing.equipment_name if self.listing else "Machinery"
 
+
+
     @property
     def location(self) -> str:
         return self.listing.location if self.listing else ""
@@ -316,4 +319,20 @@ class RentalQueue(Base):
     @property
     def equipment_name(self) -> str:
         return self.listing.equipment_name if self.listing else "Machinery"
+
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    title = Column(String(255), nullable=False)
+    message = Column(Text, nullable=False)
+    type = Column(String(50), nullable=False, default="INFO")
+    link = Column(String(255), nullable=True)
+    is_read = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="notifications")
+
 

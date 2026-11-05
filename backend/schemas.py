@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional, List
 from datetime import datetime, date
 from decimal import Decimal
@@ -13,8 +13,30 @@ class UserBase(BaseModel):
     is_equipment_owner: bool = False
     location: str
 
+    @field_validator('name')
+    @classmethod
+    def validate_name(cls, v: str) -> str:
+        if not v or len(v.strip()) < 2:
+            raise ValueError('Name must be at least 2 characters.')
+        return v.strip()
+
+    @field_validator('phone')
+    @classmethod
+    def validate_phone(cls, v: str) -> str:
+        digits = ''.join(c for c in v if c.isdigit())
+        if len(digits) < 10:
+            raise ValueError('Phone number must contain at least 10 digits.')
+        return v.strip()
+
 class UserCreate(UserBase):
     password: str = "password123"
+
+    @field_validator('password')
+    @classmethod
+    def validate_password_strength(cls, v: str) -> str:
+        if not v or len(v.strip()) < 6:
+            raise ValueError('Password must be at least 6 characters.')
+        return v.strip()
 
 class UserResponse(UserBase):
     id: int
@@ -38,6 +60,13 @@ class Token(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: Optional[str] = None
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
 
 # Product Schemas
 class ProductBase(BaseModel):
@@ -300,6 +329,7 @@ class RentalPaymentCreate(BaseModel):
     rental_id: int
     amount: float
     payment_method: str = "CASH"
+    payment_status: Optional[str] = "successful"
     transaction_reference: Optional[str] = None
 
 class RentalPaymentResponse(BaseModel):
@@ -346,4 +376,36 @@ class AvailabilityCheckResponse(BaseModel):
     start_date: date
     end_date: date
 
+# 5. Notification Schemas
+class NotificationResponse(BaseModel):
+    id: int
+    user_id: int
+    title: str
+    message: str
+    type: str
+    link: Optional[str] = None
+    is_read: bool
+    created_at: datetime
 
+    class Config:
+        from_attributes = True
+
+class NotificationMarkReadRequest(BaseModel):
+    notification_ids: Optional[List[int]] = None
+
+class FarmerDashboardStatsResponse(BaseModel):
+    active_rentals_count: int
+    completed_rentals_count: int
+    waiting_queue_count: int
+    notified_queue_count: int
+    total_orders_count: int
+    total_rental_spent: float
+    total_marketplace_spent: float
+
+class OwnerDashboardStatsResponse(BaseModel):
+    total_listings_count: int
+    pending_requests_count: int
+    active_rentals_count: int
+    completed_rentals_count: int
+    total_rental_earnings: float
+    waiting_queue_count: int

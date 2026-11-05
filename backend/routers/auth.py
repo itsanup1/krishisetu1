@@ -1,14 +1,30 @@
+from datetime import timedelta
+from jose import JWTError, jwt
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.models import User, UserRole
-from backend.schemas import UserCreate, UserUpdate, UserResponse, Token, LoginRequest
+from backend.schemas import (
+    UserCreate,
+    UserUpdate,
+    UserResponse,
+    Token,
+    LoginRequest,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
+)
 from backend.auth import get_password_hash, verify_password, create_access_token, get_current_user
+from backend.config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
+    if user_in.role == UserRole.ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Direct registration as ADMIN is not permitted.",
+        )
     existing = db.query(User).filter(User.email == user_in.email).first()
     if existing:
         raise HTTPException(
@@ -45,21 +61,12 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
             detail="User not found with this email.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    # Verify password if provided, also accept default demo passwords for test profiles
+
+    # Verify password against hash or standard demo passwords
     demo_passwords = {"password123", "farmer123", "vendor123", "admin123"}
     if login_data.password:
         is_valid = verify_password(login_data.password, user.hashed_password)
         if not is_valid and login_data.password not in demo_passwords:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password.",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-    # If password is provided, verify against hash or standard demo passwords
-    if login_data.password:
-        demo_passwords = ["farmer123", "vendor123", "admin123", "password123"]
-        if not (verify_password(login_data.password, user.hashed_password) or login_data.password in demo_passwords):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect email or password.",
@@ -73,6 +80,51 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
         "user": user,
     }
 
+@router.post("/forgot-password")
+def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == payload.email).first()
+    if not user:
+        return {
+            "status": "success",
+            "message": "If that email address is registered, password reset instructions have been generated.",
+            "reset_token": None,
+        }
+
+    reset_token = create_access_token(
+        data={"sub": str(user.id), "type": "password_reset", "email": user.email},
+        expires_delta=timedelta(hours=1),
+    )
+    return {
+        "status": "success",
+        "message": f"Password reset token generated successfully for {user.email}.",
+        "reset_token": reset_token,
+    }
+
+@router.post("/reset-password")
+def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db)):
+    if len(payload.new_password.strip()) < 6:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must be at least 6 characters long.",
+        )
+    try:
+        data = jwt.decode(payload.token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        if data.get("type") != "password_reset":
+            raise HTTPException(status_code=400, detail="Invalid reset token.")
+        user_id = int(data.get("sub"))
+    except (JWTError, ValueError):
+        raise HTTPException(status_code=400, detail="Invalid or expired reset token.")
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    user.hashed_password = get_password_hash(payload.new_password.strip())
+    db.commit()
+    return {
+        "status": "success",
+        "message": "Password reset successfully. You can now log in with your new password.",
+    }
 
 @router.get("/me", response_model=UserResponse)
 def get_me(current_user: User = Depends(get_current_user)):

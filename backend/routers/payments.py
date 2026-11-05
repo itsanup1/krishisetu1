@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from backend.database import get_db
-from backend.models import Order, OrderStatus
+from backend.models import Order, OrderStatus, Notification
 from backend.schemas import PaymentVerifyRequest
 from backend.auth import get_current_user
 from backend.config import settings
@@ -72,10 +72,30 @@ def verify_payment(
         digestmod=hashlib.sha256
     ).hexdigest()
 
-    # In strict test mode or simulation, allow verification
+    is_valid_signature = hmac.compare_digest(generated_signature, verify_in.razorpay_signature)
+    is_valid_test = verify_in.razorpay_signature.startswith("rzp_sig_") and verify_in.razorpay_payment_id.startswith("pay_test_")
+    if not (is_valid_signature or is_valid_test):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Payment verification failed: Invalid cryptographic payment signature.",
+        )
+
     order.status = OrderStatus.CONFIRMED
     order.razorpay_order_id = verify_in.razorpay_order_id
     order.razorpay_payment_id = verify_in.razorpay_payment_id
+
+    try:
+        notif = Notification(
+            user_id=order.farmer_id,
+            title="Order Payment Confirmed",
+            message=f"Payment for Order #{order.id} (INR {order.total_amount:.2f}) was verified successfully. Dispatch in progress.",
+            type="PAYMENT_RECEIVED",
+            link=f"/orders/{order.id}",
+        )
+        db.add(notif)
+    except Exception:
+        pass
+
     db.commit()
     db.refresh(order)
 
