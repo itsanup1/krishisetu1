@@ -41,31 +41,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const savedUser = localStorage.getItem('krishi_user');
 
       if (healthy) {
-        let authSuccess = false;
         if (savedToken && !savedToken.startsWith('mock-')) {
           try {
             setToken(savedToken);
             const me = await api.getMe();
             setUser(me);
             localStorage.setItem('krishi_user', JSON.stringify(me));
-            authSuccess = true;
           } catch {
             localStorage.removeItem('krishi_token');
             localStorage.removeItem('krishi_user');
+            setUser(null);
+            setToken(null);
           }
-        }
-
-        if (!authSuccess) {
-          try {
-            const res = await api.login('farmer@krishisetu.com', 'farmer123');
-            setToken(res.access_token);
-            setUser(res.user);
-            localStorage.setItem('krishi_token', res.access_token);
-            localStorage.setItem('krishi_user', JSON.stringify(res.user));
-            authSuccess = true;
-          } catch (e) {
-            console.warn('Initial backend login failed, falling back to mock user', e);
-          }
+        } else {
+          // If no token, user is unauthenticated
+          setUser(null);
+          setToken(null);
         }
       } else {
         if (savedToken && savedUser) {

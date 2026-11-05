@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, MapPin, X } from 'lucide-react';
+import { Search, MapPin, X, IndianRupee } from 'lucide-react';
 
 interface EquipmentFiltersProps {
   selectedType: string;
@@ -8,6 +8,8 @@ interface EquipmentFiltersProps {
   onLocationChange: (loc: string) => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
+  maxPrice?: number;
+  onMaxPriceChange: (price: number | undefined) => void;
 }
 
 const EQUIPMENT_TYPES: { id: string; label: string }[] = [
@@ -28,16 +30,18 @@ export const EquipmentFilters: React.FC<EquipmentFiltersProps> = ({
   onLocationChange,
   searchQuery,
   onSearchChange,
+  maxPrice,
+  onMaxPriceChange,
 }) => {
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-4 mb-6 shadow-2xs space-y-3">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {/* Search query */}
         <div className="relative">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search equipment by model (e.g. Mahindra, Shaktiman)..."
+            placeholder="Search equipment by model..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="w-full pl-9 pr-9 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-600 focus:border-emerald-600 transition"
@@ -57,7 +61,7 @@ export const EquipmentFilters: React.FC<EquipmentFiltersProps> = ({
           <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Filter by district or city (e.g. Nashik, Pune)..."
+            placeholder="Filter by district or city..."
             value={selectedLocation}
             onChange={(e) => onLocationChange(e.target.value)}
             className="w-full pl-9 pr-9 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-600 focus:border-emerald-600 transition"
@@ -70,6 +74,24 @@ export const EquipmentFilters: React.FC<EquipmentFiltersProps> = ({
               <X className="w-4 h-4" />
             </button>
           )}
+        </div>
+
+        {/* Price filter */}
+        <div className="relative">
+          <select
+            value={maxPrice !== undefined ? maxPrice.toString() : ''}
+            onChange={(e) => {
+              const val = e.target.value;
+              onMaxPriceChange(val ? parseFloat(val) : undefined);
+            }}
+            className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-600 focus:border-emerald-600 transition cursor-pointer"
+          >
+            <option value="">All Rental Prices</option>
+            <option value="500">Under ₹500 / hr</option>
+            <option value="800">Under ₹800 / hr</option>
+            <option value="1200">Under ₹1,200 / hr</option>
+            <option value="2000">Under ₹2,000 / hr</option>
+          </select>
         </div>
       </div>
 

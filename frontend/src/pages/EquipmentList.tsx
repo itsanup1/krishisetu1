@@ -18,12 +18,13 @@ export const EquipmentList: React.FC = () => {
   const [selectedType, setSelectedType] = useState<string>(typeParam);
   const [selectedLocation, setSelectedLocation] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchEquipment = async () => {
     setIsLoading(true);
     try {
-      const data = await api.getEquipment(selectedType, selectedLocation, searchQuery);
+      const data = await api.getEquipment(selectedType, selectedLocation, searchQuery, maxPrice);
       setEquipmentList(data);
     } catch (e) {
       console.error('Error fetching equipment list', e);
@@ -34,7 +35,7 @@ export const EquipmentList: React.FC = () => {
 
   useEffect(() => {
     fetchEquipment();
-  }, [selectedType, selectedLocation, searchQuery]);
+  }, [selectedType, selectedLocation, searchQuery, maxPrice]);
 
   const handleTypeSelect = (t: string) => {
     setSelectedType(t);
@@ -50,6 +51,7 @@ export const EquipmentList: React.FC = () => {
     setSelectedType('ALL');
     setSelectedLocation('');
     setSearchQuery('');
+    setMaxPrice(undefined);
     setSearchParams({});
   };
 
@@ -101,6 +103,8 @@ export const EquipmentList: React.FC = () => {
         onLocationChange={setSelectedLocation}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        maxPrice={maxPrice}
+        onMaxPriceChange={setMaxPrice}
       />
 
       {/* Grid */}

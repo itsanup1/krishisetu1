@@ -106,9 +106,9 @@ export default function App() {
                 <Route
                   path="/owner/equipment"
                   element={
-                    <ProtectedRoute>
+                    <RoleBasedRoute allowedRoles={['FARMER', 'ADMIN']} requireEquipmentOwner={true}>
                       <MyEquipment />
-                    </ProtectedRoute>
+                    </RoleBasedRoute>
                   }
                 />
                 <Route
@@ -118,9 +118,9 @@ export default function App() {
                 <Route
                   path="/owner/bookings"
                   element={
-                    <ProtectedRoute>
+                    <RoleBasedRoute allowedRoles={['FARMER', 'ADMIN']} requireEquipmentOwner={true}>
                       <EquipmentBookings />
-                    </ProtectedRoute>
+                    </RoleBasedRoute>
                   }
                 />
                 <Route
@@ -130,17 +130,17 @@ export default function App() {
                 <Route
                   path="/equipment/new"
                   element={
-                    <ProtectedRoute>
+                    <RoleBasedRoute allowedRoles={['FARMER', 'ADMIN']} requireEquipmentOwner={true}>
                       <EquipmentForm />
-                    </ProtectedRoute>
+                    </RoleBasedRoute>
                   }
                 />
                 <Route
                   path="/equipment/edit/:id"
                   element={
-                    <ProtectedRoute>
+                    <RoleBasedRoute allowedRoles={['FARMER', 'ADMIN']} requireEquipmentOwner={true}>
                       <EquipmentForm />
-                    </ProtectedRoute>
+                    </RoleBasedRoute>
                   }
                 />
 

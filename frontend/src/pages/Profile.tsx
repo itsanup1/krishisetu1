@@ -37,10 +37,28 @@ export const Profile: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSaving(true);
     setSuccessMsg(null);
     setErrorMsg(null);
 
+    if (name.trim().length < 2) {
+      setErrorMsg('Full name must be at least 2 characters long.');
+      return;
+    }
+    const digits = phone.replace(/\D/g, '');
+    if (digits.length < 10) {
+      setErrorMsg('Please enter a valid 10-digit phone number.');
+      return;
+    }
+    if (!location.trim()) {
+      setErrorMsg('District / location cannot be left blank.');
+      return;
+    }
+    if (newPassword.trim() && newPassword.trim().length < 6) {
+      setErrorMsg('New password must be at least 6 characters long.');
+      return;
+    }
+
+    setIsSaving(true);
     try {
       const payload: any = {
         name: name.trim(),
