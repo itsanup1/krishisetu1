@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, date
+from decimal import Decimal
 from backend.models import UserRole, ProductCategory, EquipmentType, RateUnit, BookingStatus, OrderStatus
 
 # User Schemas
@@ -219,4 +220,130 @@ class AdminStatsResponse(BaseModel):
     total_orders: int
     total_bookings: int
     total_revenue: float
+
+
+# ====================================================================
+# SEMESTER PROJECT: 4-TABLE RENTAL MODULE SCHEMAS
+# ====================================================================
+
+# 1. Equipment Listings Schemas
+class EquipmentListingBase(BaseModel):
+    equipment_name: str
+    category: str
+    description: Optional[str] = None
+    specifications: Optional[str] = None
+    price_per_day: float
+    total_quantity: int
+    location: Optional[str] = None
+    listing_status: Optional[str] = "active"
+    image_url: Optional[str] = None
+    rental_id: Optional[str] = None
+
+class EquipmentListingCreate(EquipmentListingBase):
+    pass
+
+class EquipmentListingUpdate(BaseModel):
+    equipment_name: Optional[str] = None
+    category: Optional[str] = None
+    description: Optional[str] = None
+    specifications: Optional[str] = None
+    price_per_day: Optional[float] = None
+    total_quantity: Optional[int] = None
+    location: Optional[str] = None
+    listing_status: Optional[str] = None
+    image_url: Optional[str] = None
+    rental_id: Optional[str] = None
+
+class EquipmentListingResponse(EquipmentListingBase):
+    listing_id: int
+    owner_id: int
+    owner_name: Optional[str] = None
+    owner_phone: Optional[str] = None
+    available_quantity: Optional[int] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+# 2. Rental Records Schemas
+class RentalRecordCreate(BaseModel):
+    listing_id: int
+    quantity_rented: int = 1
+    rental_start_date: date
+    rental_end_date: date
+
+class RentalRecordUpdateStatus(BaseModel):
+    rental_status: str  # approved, rejected, active, completed, cancelled
+
+class RentalRecordResponse(BaseModel):
+    rental_id: int
+    listing_id: int
+    farmer_id: int
+    farmer_name: Optional[str] = None
+    farmer_phone: Optional[str] = None
+    equipment_name: Optional[str] = None
+    location: Optional[str] = None
+    quantity_rented: int
+    rental_start_date: date
+    rental_end_date: date
+    rental_status: str
+    total_amount: float
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+# 3. Rental Payments Schemas
+class RentalPaymentCreate(BaseModel):
+    rental_id: int
+    amount: float
+    payment_method: str = "CASH"
+    transaction_reference: Optional[str] = None
+
+class RentalPaymentResponse(BaseModel):
+    payment_id: int
+    rental_id: int
+    amount: float
+    payment_method: str
+    payment_status: str
+    transaction_reference: Optional[str] = None
+    payment_date: Optional[datetime] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# 4. Rental Queue Schemas
+class RentalQueueCreate(BaseModel):
+    listing_id: int
+    requested_quantity: int = 1
+    requested_start_date: date
+    requested_end_date: date
+
+class RentalQueueResponse(BaseModel):
+    queue_id: int
+    listing_id: int
+    farmer_id: int
+    farmer_name: Optional[str] = None
+    equipment_name: Optional[str] = None
+    requested_quantity: int
+    requested_start_date: date
+    requested_end_date: date
+    queue_position: int
+    queue_status: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class AvailabilityCheckResponse(BaseModel):
+    listing_id: int
+    total_quantity: int
+    booked_quantity: int
+    available_quantity: int
+    start_date: date
+    end_date: date
+
 

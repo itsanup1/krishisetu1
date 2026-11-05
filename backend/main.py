@@ -5,7 +5,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.database import engine, Base
-from backend.routers import auth, products, equipment, bookings, orders, payments, admin
+from backend.routers import auth, products, equipment, bookings, orders, payments, admin, rentals
 from backend.scheduler import start_scheduler
 from backend.config import settings
 from backend.seed import seed
@@ -36,6 +36,7 @@ app.include_router(bookings.router)
 app.include_router(orders.router)
 app.include_router(payments.router)
 app.include_router(admin.router)
+app.include_router(rentals.router)
 
 # Start APScheduler background task
 scheduler = None

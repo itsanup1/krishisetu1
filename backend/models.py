@@ -3,10 +3,13 @@ from datetime import datetime
 from sqlalchemy import (
     Column,
     Integer,
+    BigInteger,
     String,
     Float,
+    Numeric,
     Boolean,
     DateTime,
+    Date,
     ForeignKey,
     Enum,
     Text,
@@ -72,6 +75,9 @@ class User(Base):
     cart_items = relationship("CartItem", back_populates="farmer")
     equipment = relationship("Equipment", back_populates="owner")
     bookings = relationship("BookingRequest", back_populates="farmer")
+    equipment_listings = relationship("EquipmentListing", back_populates="owner")
+    rental_records = relationship("RentalRecord", back_populates="farmer")
+    rental_queue_entries = relationship("RentalQueue", back_populates="farmer")
 
 class Product(Base):
     __tablename__ = "products"
@@ -200,3 +206,114 @@ class BookingRequest(Base):
     @property
     def equipment_location(self) -> str:
         return self.equipment.location if self.equipment else ""
+
+
+# ====================================================================
+# SEMESTER PROJECT: 4-TABLE EQUIPMENT RENTAL MODULE
+# ====================================================================
+
+class EquipmentListing(Base):
+    __tablename__ = "equipment_listings"
+
+    listing_id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    equipment_name = Column(String(255), nullable=False, index=True)
+    category = Column(String(100), nullable=False, index=True)
+    description = Column(Text, nullable=True)
+    specifications = Column(Text, nullable=True)
+    price_per_day = Column(Numeric(10, 2), nullable=False)
+    total_quantity = Column(Integer, nullable=False, default=1)
+    location = Column(String(255), nullable=True, index=True)
+    listing_status = Column(String(50), nullable=False, default="active", index=True)
+    image_url = Column(String(500), nullable=True)
+    rental_id = Column(String(20), nullable=True, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    owner = relationship("User", back_populates="equipment_listings")
+    rentals = relationship("RentalRecord", back_populates="listing", cascade="all, delete-orphan")
+    queue_entries = relationship("RentalQueue", back_populates="listing", cascade="all, delete-orphan")
+
+    @property
+    def owner_name(self) -> str:
+        return self.owner.name if self.owner else "Machinery Owner"
+
+    @property
+    def owner_phone(self) -> str:
+        return self.owner.phone if self.owner else ""
+
+
+class RentalRecord(Base):
+    __tablename__ = "rental_records"
+
+    rental_id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    listing_id = Column(BigInteger, ForeignKey("equipment_listings.listing_id"), nullable=False, index=True)
+    farmer_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    quantity_rented = Column(Integer, nullable=False, default=1)
+    rental_start_date = Column(Date, nullable=False)
+    rental_end_date = Column(Date, nullable=False)
+    rental_status = Column(String(50), nullable=False, default="pending", index=True)
+    total_amount = Column(Numeric(10, 2), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    listing = relationship("EquipmentListing", back_populates="rentals")
+    farmer = relationship("User", back_populates="rental_records")
+    payments = relationship("RentalPayment", back_populates="rental", cascade="all, delete-orphan")
+
+    @property
+    def farmer_name(self) -> str:
+        return self.farmer.name if self.farmer else "Farmer"
+
+    @property
+    def farmer_phone(self) -> str:
+        return self.farmer.phone if self.farmer else ""
+
+    @property
+    def equipment_name(self) -> str:
+        return self.listing.equipment_name if self.listing else "Machinery"
+
+    @property
+    def location(self) -> str:
+        return self.listing.location if self.listing else ""
+
+
+class RentalPayment(Base):
+    __tablename__ = "rental_payments"
+
+    payment_id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    rental_id = Column(BigInteger, ForeignKey("rental_records.rental_id"), nullable=False, index=True)
+    amount = Column(Numeric(10, 2), nullable=False)
+    payment_method = Column(String(50), default="CASH")
+    payment_status = Column(String(50), nullable=False, default="pending", index=True)
+    transaction_reference = Column(String(255), unique=True, nullable=True)
+    payment_date = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    rental = relationship("RentalRecord", back_populates="payments")
+
+
+class RentalQueue(Base):
+    __tablename__ = "rental_queue"
+
+    queue_id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    listing_id = Column(BigInteger, ForeignKey("equipment_listings.listing_id"), nullable=False, index=True)
+    farmer_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    requested_quantity = Column(Integer, nullable=False, default=1)
+    requested_start_date = Column(Date, nullable=False)
+    requested_end_date = Column(Date, nullable=False)
+    queue_position = Column(Integer, nullable=False, default=1)
+    queue_status = Column(String(50), nullable=False, default="waiting", index=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    listing = relationship("EquipmentListing", back_populates="queue_entries")
+    farmer = relationship("User", back_populates="rental_queue_entries")
+
+    @property
+    def farmer_name(self) -> str:
+        return self.farmer.name if self.farmer else "Farmer"
+
+    @property
+    def equipment_name(self) -> str:
+        return self.listing.equipment_name if self.listing else "Machinery"
+

@@ -9,7 +9,12 @@ import {
   AvailabilitySlot,
   BookingRequest,
   AdminStats,
-  OrderStatus
+  OrderStatus,
+  EquipmentListing,
+  RentalRecord,
+  RentalPayment,
+  RentalQueueEntry,
+  AvailabilityCheck,
 } from '../types';
 
 const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:8000';
@@ -1665,5 +1670,125 @@ export const api = {
     } catch {
       return mockBackend.getBookings(undefined, undefined, 'ADMIN');
     }
+  },
+
+  // ====================================================================
+  // SEMESTER PROJECT: 4-TABLE RENTAL MODULE API CLIENT
+  // ====================================================================
+
+  // Table 1: Equipment Listings
+  async getEquipmentListings(params?: {
+    category?: string;
+    location?: string;
+    search?: string;
+    start_date?: string;
+    end_date?: string;
+  }): Promise<EquipmentListing[]> {
+    const res = await apiClient.get('/rentals/listings', { params });
+    return res.data;
+  },
+
+  async getEquipmentListingDetail(id: number, startDate?: string, endDate?: string): Promise<EquipmentListing> {
+    const params = (startDate && endDate) ? { start_date: startDate, end_date: endDate } : undefined;
+    const res = await apiClient.get(`/rentals/listings/${id}`, { params });
+    return res.data;
+  },
+
+  async createEquipmentListing(data: Partial<EquipmentListing>): Promise<EquipmentListing> {
+    const res = await apiClient.post('/rentals/listings', data);
+    return res.data;
+  },
+
+  async updateEquipmentListing(id: number, data: Partial<EquipmentListing>): Promise<EquipmentListing> {
+    const res = await apiClient.put(`/rentals/listings/${id}`, data);
+    return res.data;
+  },
+
+  async deleteEquipmentListing(id: number): Promise<{ status: string; message: string }> {
+    const res = await apiClient.delete(`/rentals/listings/${id}`);
+    return res.data;
+  },
+
+  async getMyEquipmentListings(): Promise<EquipmentListing[]> {
+    const res = await apiClient.get('/rentals/my-listings');
+    return res.data;
+  },
+
+  // Dynamic Availability
+  async checkEquipmentAvailability(listingId: number, startDate: string, endDate: string): Promise<AvailabilityCheck> {
+    const res = await apiClient.get(`/rentals/listings/${listingId}/availability`, {
+      params: { start_date: startDate, end_date: endDate }
+    });
+    return res.data;
+  },
+
+  // Table 2: Rental Records
+  async requestRental(data: {
+    listing_id: number;
+    quantity_rented: number;
+    rental_start_date: string;
+    rental_end_date: string;
+  }): Promise<RentalRecord> {
+    const res = await apiClient.post('/rentals/records', data);
+    return res.data;
+  },
+
+  async getMyRentals(): Promise<RentalRecord[]> {
+    const res = await apiClient.get('/rentals/my-rentals');
+    return res.data;
+  },
+
+  async getOwnerRentalRequests(): Promise<RentalRecord[]> {
+    const res = await apiClient.get('/rentals/owner-requests');
+    return res.data;
+  },
+
+  async updateRentalStatus(rentalId: number, status: string): Promise<RentalRecord> {
+    const res = await apiClient.patch(`/rentals/records/${rentalId}/status`, {
+      rental_status: status
+    });
+    return res.data;
+  },
+
+  // Table 3: Rental Payments
+  async createRentalPayment(data: {
+    rental_id: number;
+    amount: number;
+    payment_method?: string;
+    transaction_reference?: string;
+  }): Promise<RentalPayment> {
+    const res = await apiClient.post('/rentals/payments', data);
+    return res.data;
+  },
+
+  async getRentalPayments(rentalId: number): Promise<RentalPayment[]> {
+    const res = await apiClient.get(`/rentals/records/${rentalId}/payments`);
+    return res.data;
+  },
+
+  // Table 4: Rental Queue
+  async joinRentalQueue(data: {
+    listing_id: number;
+    requested_quantity: number;
+    requested_start_date: string;
+    requested_end_date: string;
+  }): Promise<RentalQueueEntry> {
+    const res = await apiClient.post('/rentals/queue', data);
+    return res.data;
+  },
+
+  async getMyQueueEntries(): Promise<RentalQueueEntry[]> {
+    const res = await apiClient.get('/rentals/my-queue');
+    return res.data;
+  },
+
+  async leaveRentalQueue(queueId: number): Promise<{ status: string; message: string }> {
+    const res = await apiClient.delete(`/rentals/queue/${queueId}`);
+    return res.data;
+  },
+
+  async getListingQueue(listingId: number): Promise<RentalQueueEntry[]> {
+    const res = await apiClient.get(`/rentals/listings/${listingId}/queue`);
+    return res.data;
   },
 };

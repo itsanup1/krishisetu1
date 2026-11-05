@@ -170,3 +170,79 @@ export interface AdminStats {
   total_bookings: number;
   total_revenue: number;
 }
+
+// ====================================================================
+// SEMESTER PROJECT: 4-TABLE RENTAL MODULE TYPES
+// ====================================================================
+
+export interface EquipmentListing {
+  listing_id: number;
+  owner_id: number;
+  owner_name?: string;
+  owner_phone?: string;
+  equipment_name: string;
+  category: string;
+  description?: string;
+  specifications?: string;
+  price_per_day: number;
+  total_quantity: number;
+  available_quantity?: number;
+  location?: string;
+  listing_status: 'active' | 'deactivated' | 'inactive';
+  image_url?: string;
+  rental_id?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface RentalRecord {
+  rental_id: number;
+  listing_id: number;
+  farmer_id: number;
+  farmer_name?: string;
+  farmer_phone?: string;
+  equipment_name?: string;
+  location?: string;
+  quantity_rented: number;
+  rental_start_date: string;
+  rental_end_date: string;
+  rental_status: 'pending' | 'approved' | 'active' | 'completed' | 'cancelled' | 'rejected';
+  total_amount: number;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface RentalPayment {
+  payment_id: number;
+  rental_id: number;
+  amount: number;
+  payment_method: string;
+  payment_status: 'pending' | 'successful' | 'failed' | 'refunded';
+  transaction_reference?: string;
+  payment_date?: string;
+  created_at: string;
+}
+
+export interface RentalQueueEntry {
+  queue_id: number;
+  listing_id: number;
+  farmer_id: number;
+  farmer_name?: string;
+  equipment_name?: string;
+  requested_quantity: number;
+  requested_start_date: string;
+  requested_end_date: string;
+  queue_position: number;
+  queue_status: 'waiting' | 'notified' | 'fulfilled' | 'cancelled';
+  created_at: string;
+}
+
+export interface AvailabilityCheck {
+  listing_id: number;
+  total_quantity: number;
+  booked_quantity: number;
+  available_quantity: number;
+  start_date: string;
+  end_date: string;
+}
+
