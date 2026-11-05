@@ -91,3 +91,4 @@ def downgrade() -> None:
     op.drop_table('rental_payments')
     op.drop_table('rental_records')
     op.drop_table('equipment_listings')
+

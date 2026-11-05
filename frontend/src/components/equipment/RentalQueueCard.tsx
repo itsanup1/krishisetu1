@@ -115,3 +115,4 @@ export const RentalQueueCard: React.FC<RentalQueueCardProps> = ({ entry, onRefre
     </div>
   );
 };
+

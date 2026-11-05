@@ -358,3 +358,4 @@ export const RentalRecordCard: React.FC<RentalRecordCardProps> = ({
     </div>
   );
 };
+
