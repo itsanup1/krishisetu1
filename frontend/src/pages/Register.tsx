@@ -38,7 +38,7 @@ export const Register: React.FC = () => {
       if (role === 'VENDOR') {
         navigate('/vendor/dashboard');
       } else {
-        navigate('/dashboard');
+        navigate('/products');
       }
     } catch (err: any) {
       setError(err.message || 'Registration failed.');

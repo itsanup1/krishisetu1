@@ -32,7 +32,6 @@ import { AdminUsers } from './pages/AdminUsers';
 import { AdminBookings } from './pages/AdminBookings';
 import { AdminOrders } from './pages/AdminOrders';
 import { Profile } from './pages/Profile';
-import { AICropDoctor } from './pages/AICropDoctor';
 
 export default function App() {
   return (
@@ -44,14 +43,14 @@ export default function App() {
             <main className="flex-1">
               <Routes>
                 {/* Public Browsing Routes */}
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Navigate to="/products" replace />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:id" element={<ProductDetail />} />
                 <Route path="/equipment" element={<EquipmentList />} />
                 <Route path="/equipment/:id" element={<EquipmentDetail />} />
-                <Route path="/crop-doctor" element={<AICropDoctor />} />
 
                 {/* Farmer / Customer Routes */}
                 <Route

@@ -9,7 +9,7 @@ export const Login: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as any)?.from?.pathname || '/dashboard';
+  const from = (location.state as any)?.from?.pathname;
 
   const [email, setEmail] = useState('farmer@krishisetu.com');
   const [password, setPassword] = useState('farmer123');
@@ -28,7 +28,12 @@ export const Login: React.FC = () => {
       } else if (email.includes('vendor')) {
         navigate('/vendor/dashboard');
       } else {
-        navigate(from === '/login' ? '/dashboard' : from);
+        // Landing page after login is Marketplace by default
+        if (!from || from === '/login' || from === '/cart') {
+          navigate('/products');
+        } else {
+          navigate(from);
+        }
       }
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials.');
