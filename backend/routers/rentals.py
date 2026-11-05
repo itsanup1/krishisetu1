@@ -501,8 +501,9 @@ def update_rental_status(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Only the machinery owner can approve or reject rental requests.",
             )
-        # When approving, verify stock has not been exhausted
+        # When approving, verify stock has not been exhausted with row-level locking
         if new_status == "approved":
+            db.query(EquipmentListing).filter(EquipmentListing.listing_id == rental.listing_id).with_for_update().first()
             avail = compute_available_quantity(
                 db, rental.listing_id, rental.rental_start_date, rental.rental_end_date
             )
